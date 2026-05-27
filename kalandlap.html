@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalandlap – A Tűzhegy Varázslója</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap');
+
+  :root {
+    --bg: #0d0a06;
+    --surface: #1a1208;
+    --surface2: #221a0e;
+    --border: #5c3d1a;
+    --gold: #c9922a;
+    --gold2: #f0b84a;
+    --red: #8b1a1a;
+    --red2: #c0392b;
+    --text: #e8d5b0;
+    --text-dim: #a08060;
+    --green: #2d5a27;
+    --green2: #4caf50;
+    --purple: #9b59b6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 17px;
+    min-height: 100vh;
+  }
+
+  nav {
+    background: linear-gradient(135deg, #0a0704, #1f1508, #0a0704);
+    border-bottom: 2px solid var(--gold);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 10px;
+  }
+  .nav-logo {
+    font-family: 'Cinzel Decorative', serif;
+    color: var(--gold2);
+    font-size: 14px;
+    padding: 12px 16px 12px 0;
+    border-right: 1px solid var(--border);
+    white-space: nowrap;
+    text-shadow: 0 0 15px rgba(201,146,42,0.5);
+  }
+  .nav-links { display: flex; }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: 14px 18px;
+    font-size: 14px;
+    border-right: 1px solid var(--border);
+    transition: all 0.2s;
+    font-family: 'Crimson Pro', serif;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--gold2);
+    background: rgba(201,146,42,0.1);
+  }
+  .nav-links a.active { border-bottom: 2px solid var(--gold2); }
+
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 16px 80px;
+  }
+
+  .page-title {
+    font-family: 'Cinzel Decorative', serif;
+    color: var(--gold2);
+    font-size: clamp(18px, 4vw, 30px);
+    text-align: center;
+    margin-bottom: 6px;
+    text-shadow: 0 0 30px rgba(240,184,74,0.4);
+  }
+  .title-divider {
+    width: 300px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 12px auto 28px;
+  }
+
+  /* Top bar */
+  .top-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .btn {
+    padding: 9px 18px;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Crimson Pro', serif;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, #5c3d1a, #8b5e2a);
+    color: var(--gold2);
+    border: 1px solid var(--gold);
+  }
+  .btn-gold:hover { background: linear-gradient(135deg, #7a5222, #a37030); }
+  .btn-dim {
+    background: var(--surface2);
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+  }
+  .btn-dim:hover { border-color: var(--gold); color: var(--text); }
+  .btn-red {
+    background: linear-gradient(135deg, #5a1010, #8b1a1a);
+    color: #ff9999;
+    border: 1px solid var(--red2);
+  }
+  .btn-red:hover { background: linear-gradient(135deg, #7a1515, #a02020); }
+
+  /* Sheet grid */
+  .sheet-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 620px) { .sheet-grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 18px 20px;
+    position: relative;
+  }
+  .card::before, .card::after {
+    content: '';
+    position: absolute;
+    width: 14px; height: 14px;
+    border-color: var(--gold);
+    border-style: solid;
+    opacity: 0.5;
+  }
+  .card::before { top: 6px; left: 6px; border-width: 1px 0 0 1px; }
+  .card::after { bottom: 6px; right: 6px; border-width: 0 1px 1px 0; }
+  .card h3 {
+    font-family: 'Cinzel Decorative', serif;
+    color: var(--gold);
+    font-size: 14px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.05em;
+  }
+
+  /* Stat block */
+  .stat-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .stat-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .stat-icon { font-size: 20px; width: 28px; text-align: center; }
+  .stat-info { flex: 1; }
+  .stat-name { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; }
+  .stat-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .stat-minus, .stat-plus {
+    width: 28px; height: 28px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .stat-minus:hover { border-color: var(--red2); color: #ff6b6b; background: rgba(139,26,26,0.2); }
+  .stat-plus:hover { border-color: var(--green2); color: var(--green2); background: rgba(45,90,39,0.2); }
+  .stat-current {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 24px;
+    color: var(--gold2);
+    min-width: 42px;
+    text-align: center;
+    background: #0a0704;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 2px 6px;
+  }
+  .stat-max-label { font-size: 12px; color: var(--text-dim); }
+  .stat-max-val {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 14px;
+    color: var(--text-dim);
+    cursor: pointer;
+    border-bottom: 1px dashed var(--border);
+  }
+  .stat-bar {
+    height: 6px;
+    background: #111;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+  .stat-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
+  .fill-blue { background: linear-gradient(90deg, #2980b9, #3498db); }
+  .fill-red { background: linear-gradient(90deg, #c0392b, #e74c3c); }
+  .fill-purple { background: linear-gradient(90deg, #8e44ad, #9b59b6); }
+
+  /* Dice in stat block */
+  .stat-die {
+    width: 28px; height: 28px;
+    background: var(--surface2);
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.15s;
+    color: var(--gold2);
+  }
+  .stat-die:hover { background: rgba(201,146,42,0.15); }
+  .stat-die:active { transform: scale(0.9); }
+
+  /* Food */
+  .food-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(92,61,26,0.3);
+  }
+  .food-pip-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 10px 0;
+  }
+  .food-pip {
+    width: 32px; height: 32px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    transition: all 0.15s;
+  }
+  .food-pip.used { opacity: 0.25; background: #0a0704; }
+  .food-pip:hover { border-color: var(--gold); }
+
+  /* Potion */
+  .potion-pips {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+  }
+  .potion-pip {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--purple);
+    background: var(--surface2);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    transition: all 0.2s;
+  }
+  .potion-pip.used { opacity: 0.2; }
+  .potion-pip:hover { background: rgba(155,89,182,0.15); }
+
+  /* Items */
+  .item-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .item-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    animation: slideIn 0.2s;
+  }
+  @keyframes slideIn { from { opacity:0; transform:translateX(-8px); } to { opacity:1; transform:none; } }
+  .item-name { flex: 1; font-size: 15px; }
+  .item-del {
+    color: var(--red2);
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0 4px;
+    line-height: 1;
+    transition: color 0.15s;
+  }
+  .item-del:hover { color: #ff3333; }
+  .item-input-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .item-input {
+    flex: 1;
+    background: #0a0704;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 7px 10px;
+    border-radius: 3px;
+    font-family: 'Crimson Pro', serif;
+    font-size: 15px;
+  }
+  .item-input:focus { outline: none; border-color: var(--gold); }
+  .item-add {
+    background: var(--surface2);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 7px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.15s;
+  }
+  .item-add:hover { background: rgba(201,146,42,0.15); }
+
+  /* Keys */
+  .keys-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .key-chip {
+    background: var(--surface2);
+    border: 1px solid #8b6914;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 14px;
+    color: var(--gold);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .key-chip:hover { border-color: var(--red2); }
+  .key-chip span { color: var(--red2); font-size: 16px; }
+  .key-input-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .key-input {
+    background: #0a0704;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 7px 10px;
+    border-radius: 3px;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 15px;
+    width: 80px;
+    text-align: center;
+  }
+  .key-input:focus { outline: none; border-color: var(--gold); }
+
+  /* Notes */
+  .notes-area {
+    width: 100%;
+    background: #0a0704;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 12px;
+    border-radius: 3px;
+    font-family: 'Crimson Pro', serif;
+    font-size: 15px;
+    line-height: 1.7;
+    resize: vertical;
+    min-height: 100px;
+  }
+  .notes-area:focus { outline: none; border-color: var(--gold); }
+
+  /* Monster log */
+  .monster-log {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 220px;
+    overflow-y: auto;
+  }
+  .monster-entry {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #1a0a0a;
+    border: 1px solid #3a1a1a;
+    border-radius: 3px;
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  .monster-entry .m-name { flex: 1; color: #ff9999; }
+  .monster-entry .m-stats { color: var(--text-dim); font-size: 12px; }
+  .monster-entry .m-del { color: #666; cursor: pointer; }
+  .monster-entry .m-del:hover { color: var(--red2); }
+  .monster-entry.dead { opacity: 0.4; text-decoration: line-through; }
+
+  .monster-add-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+  .monster-add-row input {
+    background: #0a0704;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 8px;
+    border-radius: 3px;
+    font-family: 'Crimson Pro', serif;
+    font-size: 14px;
+  }
+  .monster-add-row input:focus { outline: none; border-color: var(--gold); }
+  .m-name-input { flex: 2; min-width: 80px; }
+  .m-num-input { width: 60px; text-align: center; font-family: 'Cinzel Decorative', serif; }
+
+  /* Map grid */
+  .map-grid {
+    display: grid;
+    gap: 3px;
+    margin-top: 8px;
+  }
+  .map-cell {
+    height: 26px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    color: transparent;
+  }
+  .map-cell:hover { border-color: var(--gold); }
+  .map-cell.visited { background: rgba(201,146,42,0.15); border-color: var(--gold); }
+  .map-cell.visited::after { content: attr(data-num); color: var(--gold); }
+  .map-cell.danger { background: rgba(139,26,26,0.3); border-color: var(--red2); }
+  .map-cell.danger::after { content: attr(data-num); color: #ff9999; }
+  .map-cell.safe { background: rgba(45,90,39,0.3); border-color: var(--green2); }
+  .map-cell.safe::after { content: attr(data-num); color: var(--green2); }
+
+  .map-legend {
+    display: flex;
+    gap: 14px;
+    margin: 8px 0;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-dim);
+    cursor: pointer;
+  }
+  .legend-dot {
+    width: 14px; height: 14px;
+    border-radius: 2px;
+    border: 1px solid;
+  }
+
+  /* Section tracker */
+  .visited-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    max-height: 140px;
+    overflow-y: auto;
+  }
+  .visited-chip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 3px 10px;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 13px;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .visited-chip:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* Notification */
+  .notification {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    background: var(--surface);
+    border: 1px solid var(--gold);
+    color: var(--gold2);
+    padding: 10px 18px;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 300;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s;
+    pointer-events: none;
+  }
+  .notification.show { opacity: 1; transform: translateY(0); }
+
+  .full-card { grid-column: 1 / -1; }
+  .section-badge {
+    display: inline-block;
+    background: var(--surface2);
+    border: 1px solid var(--gold);
+    border-radius: 3px;
+    padding: 2px 10px;
+    font-family: 'Cinzel Decorative', serif;
+    color: var(--gold2);
+    font-size: 22px;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">⚔ Tűzhegy</div>
+    <div class="nav-links">
+      <a href="index.html">📖 Kaland</a>
+      <a href="szabalyok.html">📜 Szabályok</a>
+      <a href="kalandlap.html" class="active">🗡️ Kalandlap</a>
+    </div>
+  </div>
+</nav>
+
+<div id="notification" class="notification"></div>
+
+<main>
+  <div class="page-title">🗡️ Kalandlap</div>
+  <div class="title-divider"></div>
+
+  <div class="top-actions">
+    <span style="color:var(--text-dim);font-size:14px;align-self:center;">Jelenlegi bekezdés: <span class="section-badge" id="current-section">1</span></span>
+    <button class="btn btn-gold" onclick="saveData()">💾 Mentés</button>
+    <button class="btn btn-dim" onclick="loadData()">📂 Betölt</button>
+    <button class="btn btn-red" onclick="resetData()">↺ Újrakezd</button>
+  </div>
+
+  <div class="sheet-grid">
+
+    <!-- STATS CARD -->
+    <div class="card">
+      <h3>⚔ Jellemzők</h3>
+      <div class="stat-block">
+
+        <!-- ÜGYESSÉG -->
+        <div class="stat-row">
+          <span class="stat-icon">⚔</span>
+          <div class="stat-info">
+            <div class="stat-name">Ügyesség</div>
+            <div class="stat-bar"><div class="stat-fill fill-blue" id="bar-ug" style="width:100%"></div></div>
+          </div>
+          <div class="stat-controls">
+            <div class="stat-minus" onclick="changeStat('ug',-1)">−</div>
+            <div class="stat-current" id="val-ug">9</div>
+            <div class="stat-plus" onclick="changeStat('ug',+1)">+</div>
+            <div class="stat-die" onclick="rollAndSet('ug')" title="Dobj (1k+6)">🎲</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding-left:36px;margin-top:-6px;margin-bottom:4px;">
+          <span class="stat-max-label">Kezdeti érték:</span>
+          <span class="stat-max-val" id="max-ug" onclick="editMax('ug')" title="Kattints a szerkesztéshez">9</span>
+          <button style="background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:12px;" onclick="editMax('ug')">✏</button>
+        </div>
+
+        <!-- ÉLETERŐ -->
+        <div class="stat-row">
+          <span class="stat-icon">❤</span>
+          <div class="stat-info">
+            <div class="stat-name">Életerő</div>
+            <div class="stat-bar"><div class="stat-fill fill-red" id="bar-el" style="width:100%"></div></div>
+          </div>
+          <div class="stat-controls">
+            <div class="stat-minus" onclick="changeStat('el',-1)">−</div>
+            <div class="stat-current" id="val-el">18</div>
+            <div class="stat-plus" onclick="changeStat('el',+1)">+</div>
+            <div class="stat-die" onclick="rollAndSet('el')" title="Dobj (2k+12)">🎲</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding-left:36px;margin-top:-6px;margin-bottom:4px;">
+          <span class="stat-max-label">Kezdeti érték:</span>
+          <span class="stat-max-val" id="max-el" onclick="editMax('el')" title="Kattints a szerkesztéshez">18</span>
+          <button style="background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:12px;" onclick="editMax('el')">✏</button>
+        </div>
+
+        <!-- SZERENCSE -->
+        <div class="stat-row">
+          <span class="stat-icon">🍀</span>
+          <div class="stat-info">
+            <div class="stat-name">Szerencse</div>
+            <div class="stat-bar"><div class="stat-fill fill-purple" id="bar-sz" style="width:100%"></div></div>
+          </div>
+          <div class="stat-controls">
+            <div class="stat-minus" onclick="changeStat('sz',-1)">−</div>
+            <div class="stat-current" id="val-sz">9</div>
+            <div class="stat-plus" onclick="changeStat('sz',+1)">+</div>
+            <div class="stat-die" onclick="rollAndSet('sz')" title="Dobj (1k+6)">🎲</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding-left:36px;margin-top:-6px;">
+          <span class="stat-max-label">Kezdeti érték:</span>
+          <span class="stat-max-val" id="max-sz" onclick="editMax('sz')" title="Kattints a szerkesztéshez">9</span>
+          <button style="background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:12px;" onclick="editMax('sz')">✏</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOD & POTION CARD -->
+    <div class="card">
+      <h3>🍖 Élelmiszer & Italok</h3>
+
+      <div style="margin-bottom:14px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span style="font-size:13px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;">Élelmiszerkészlet</span>
+          <span style="font-family:'Cinzel Decorative',serif;color:var(--gold2);font-size:18px;" id="food-count">10</span>
+        </div>
+        <div class="food-pip-grid" id="food-pips"></div>
+        <button class="btn btn-dim" style="font-size:13px;padding:5px 14px;margin-top:4px;" onclick="eatFood()">🍖 Eszik (+4 ÉP)</button>
+      </div>
+
+      <div style="border-top:1px solid var(--border);padding-top:14px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:13px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;">Varázs Ital</span>
+          <select id="potion-type" style="background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);padding:4px 8px;border-radius:3px;font-size:13px;" onchange="savePotionType()">
+            <option value="ug">Ügyesség Itala</option>
+            <option value="el" selected>Erő Itala</option>
+            <option value="sz">Szerencse Itala</option>
+          </select>
+        </div>
+        <div class="potion-pips" id="potion-pips"></div>
+        <button class="btn btn-dim" style="font-size:13px;padding:5px 14px;margin-top:4px;" onclick="usePotion()">🧪 Ital használata</button>
+      </div>
+    </div>
+
+    <!-- INVENTORY CARD -->
+    <div class="card">
+      <h3>🎒 Felszerelés & Tárgyak</h3>
+      <ul class="item-list" id="item-list"></ul>
+      <div class="item-input-row">
+        <input type="text" class="item-input" id="item-input" placeholder="Tárgy neve..." onkeydown="if(event.key==='Enter')addItem()">
+        <button class="item-add" onclick="addItem()">+</button>
+      </div>
+      <div style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px;">
+        <p style="font-size:13px;color:var(--text-dim);margin-bottom:8px;">Alap felszerelés:</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span style="font-size:13px;color:var(--text-dim)">⚔ Kard</span>
+          <span style="font-size:13px;color:var(--text-dim)">🛡 Bőrpáncél</span>
+          <span style="font-size:13px;color:var(--text-dim)">🔦 Lámpás</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KEYS CARD -->
+    <div class="card">
+      <h3>🗝 Kulcsok</h3>
+      <p style="font-size:14px;color:var(--text-dim);margin-bottom:10px;">Gyűjtsd össze a Varázsló ládájának kulcsait!</p>
+      <div class="keys-grid" id="keys-grid"></div>
+      <div class="key-input-row">
+        <input type="number" class="key-input" id="key-input" placeholder="Szám" min="1" max="999" onkeydown="if(event.key==='Enter')addKey()">
+        <button class="btn btn-gold" style="font-size:13px;padding:6px 14px;" onclick="addKey()">+ Kulcs</button>
+      </div>
+    </div>
+
+    <!-- MONSTER LOG -->
+    <div class="card full-card">
+      <h3>👹 Harc Szörnyekkel</h3>
+      <div class="monster-log" id="monster-log"></div>
+      <div class="monster-add-row">
+        <input type="text" class="m-name-input" id="m-name" placeholder="Szörny neve" onkeydown="if(event.key==='Enter')addMonster()">
+        <input type="number" class="m-num-input" id="m-ug" placeholder="Ügy." min="1" max="20">
+        <input type="number" class="m-num-input" id="m-el" placeholder="ÉP" min="1" max="30">
+        <button class="btn btn-red" style="font-size:13px;padding:6px 14px;" onclick="addMonster()">+ Harc</button>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="card full-card">
+      <h3>📝 Megjegyzések & Térkép-jelzetek</h3>
+      <textarea class="notes-area" id="notes" placeholder="Jegyezd fel az elágazásokat, titkos szobákat, fontos tárgyakat..."></textarea>
+    </div>
+
+    <!-- VISITED SECTIONS -->
+    <div class="card full-card">
+      <h3>📖 Meglátogatott bekezdések</h3>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:10px;">A felkeresett bekezdések számai (kattintás = törlés):</p>
+      <div class="visited-list" id="visited-list"></div>
+      <div style="margin-top:10px;display:flex;gap:8px;">
+        <input type="number" id="visit-input" style="background:#0a0704;border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:3px;width:90px;font-family:'Cinzel Decorative',serif;font-size:15px;text-align:center;" placeholder="Szám" min="1" max="399" onkeydown="if(event.key==='Enter')addVisited()">
+        <button class="btn btn-dim" style="font-size:13px;" onclick="addVisited()">+ Hozzáad</button>
+        <button class="btn btn-dim" style="font-size:13px;" onclick="addCurrentVisited()">+ Jelenlegi</button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+// ========== STATE ==========
+let sheet = {
+  ug: 9, ugMax: 9,
+  el: 18, elMax: 18,
+  sz: 9, szMax: 9,
+  food: 10,
+  potion: 2,
+  potionType: 'el',
+  items: [],
+  keys: [],
+  monsters: [],
+  notes: '',
+  visited: [],
+  currentSection: 1
+};
+
+function roll(n) {
+  let t = 0;
+  for (let i = 0; i < n; i++) t += Math.ceil(Math.random() * 6);
+  return t;
+}
+
+// ========== SYNC FROM ADVENTURE ==========
+function syncFromAdventure() {
+  try {
+    const saved = localStorage.getItem('tuzegy_state');
+    if (saved) {
+      const s = JSON.parse(saved);
+      sheet.ug = s.ug; sheet.ugMax = s.ugMax;
+      sheet.el = s.el; sheet.elMax = s.elMax;
+      sheet.sz = s.sz; sheet.szMax = s.szMax;
+      sheet.food = s.food;
+      sheet.potion = s.potion;
+      sheet.potionType = s.potionType || 'el';
+      sheet.currentSection = s.current || 1;
+      notify('✅ Szinkronizálva az kalandból!');
+      renderAll();
+    }
+  } catch(e) {}
+}
+
+// ========== RENDER ==========
+function renderAll() {
+  // Stats
+  ['ug','el','sz'].forEach(s => {
+    document.getElementById('val-' + s).textContent = sheet[s];
+    document.getElementById('max-' + s).textContent = sheet[s + 'Max'];
+    document.getElementById('bar-' + s).style.width = Math.round(sheet[s] / sheet[s + 'Max'] * 100) + '%';
+  });
+  document.getElementById('current-section').textContent = sheet.currentSection;
+
+  // Potion type
+  document.getElementById('potion-type').value = sheet.potionType;
+
+  // Food pips
+  const fp = document.getElementById('food-pips');
+  fp.innerHTML = '';
+  document.getElementById('food-count').textContent = sheet.food;
+  for (let i = 0; i < 10; i++) {
+    const pip = document.createElement('div');
+    pip.className = 'food-pip' + (i >= sheet.food ? ' used' : '');
+    pip.textContent = i >= sheet.food ? '' : '🍖';
+    pip.onclick = () => { sheet.food = i >= sheet.food ? i + 1 : i; renderAll(); };
+    fp.appendChild(pip);
+  }
+
+  // Potion pips
+  const pp = document.getElementById('potion-pips');
+  pp.innerHTML = '';
+  for (let i = 0; i < 2; i++) {
+    const pip = document.createElement('div');
+    pip.className = 'potion-pip' + (i >= sheet.potion ? ' used' : '');
+    pip.textContent = i >= sheet.potion ? '💧' : '🧪';
+    pip.onclick = () => { sheet.potion = i >= sheet.potion ? i + 1 : i; renderAll(); };
+    pp.appendChild(pip);
+  }
+
+  // Items
+  const il = document.getElementById('item-list');
+  il.innerHTML = '';
+  sheet.items.forEach((item, i) => {
+    const li = document.createElement('li');
+    li.className = 'item-row';
+    li.innerHTML = `<span class="item-name">${item}</span><span class="item-del" onclick="removeItem(${i})" title="Törlés">×</span>`;
+    il.appendChild(li);
+  });
+
+  // Keys
+  const kg = document.getElementById('keys-grid');
+  kg.innerHTML = '';
+  sheet.keys.forEach((key, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'key-chip';
+    chip.innerHTML = `🗝 ${key} <span onclick="removeKey(${i})" title="Eltávolít">×</span>`;
+    kg.appendChild(chip);
+  });
+
+  // Monster log
+  const ml = document.getElementById('monster-log');
+  ml.innerHTML = '';
+  if (sheet.monsters.length === 0) {
+    ml.innerHTML = '<p style="color:var(--text-dim);font-size:14px;font-style:italic;">Még nincs harc lejegyezve.</p>';
+  } else {
+    sheet.monsters.forEach((m, i) => {
+      const div = document.createElement('div');
+      div.className = 'monster-entry' + (m.dead ? ' dead' : '');
+      div.innerHTML = `
+        <span class="m-name">👹 ${m.name}</span>
+        <span class="m-stats">Ügy: ${m.ug} | ÉP: ${m.el}</span>
+        <span style="color:${m.dead?'#4caf50':'var(--red2)'};cursor:pointer;font-size:12px;" onclick="toggleDead(${i})">${m.dead ? '✅ Legyőzve' : '⚔ Harcban'}</span>
+        <span class="m-del" onclick="removeMonster(${i})">×</span>`;
+      ml.appendChild(div);
+    });
+  }
+
+  // Notes
+  document.getElementById('notes').value = sheet.notes;
+
+  // Visited
+  const vl = document.getElementById('visited-list');
+  vl.innerHTML = '';
+  [...new Set(sheet.visited)].sort((a,b)=>a-b).forEach(num => {
+    const chip = document.createElement('div');
+    chip.className = 'visited-chip';
+    chip.textContent = num;
+    chip.title = 'Kattints a törléshez';
+    chip.onclick = () => { sheet.visited = sheet.visited.filter(v => v !== num); renderAll(); };
+    vl.appendChild(chip);
+  });
+}
+
+// ========== STATS ==========
+function changeStat(s, delta) {
+  sheet[s] = Math.max(0, Math.min(sheet[s + 'Max'], sheet[s] + delta));
+  renderAll();
+}
+
+function editMax(s) {
+  const val = prompt(`Kezdeti ${s.toUpperCase()} érték:`, sheet[s + 'Max']);
+  if (val !== null) {
+    const n = parseInt(val);
+    if (!isNaN(n) && n > 0) {
+      sheet[s + 'Max'] = n;
+      sheet[s] = Math.min(sheet[s], n);
+      renderAll();
+    }
+  }
+}
+
+function rollAndSet(s) {
+  let val;
+  if (s === 'el') val = roll(2) + 12;
+  else val = roll(1) + 6;
+  sheet[s] = sheet[s + 'Max'] = val;
+  notify(`🎲 ${s.toUpperCase()}: ${val} pont`);
+  renderAll();
+}
+
+// ========== FOOD / POTION ==========
+function eatFood() {
+  if (sheet.food <= 0) { notify('Nincs több élelem!'); return; }
+  if (sheet.el >= sheet.elMax) { notify('Életerőd már teljes!'); return; }
+  sheet.food--;
+  sheet.el = Math.min(sheet.elMax, sheet.el + 4);
+  notify('🍖 Ettél! +4 Életerő');
+  renderAll();
+}
+
+function usePotion() {
+  if (sheet.potion <= 0) { notify('Nincs több ital!'); return; }
+  sheet.potion--;
+  const t = sheet.potionType;
+  if (t === 'ug') { sheet.ug = sheet.ugMax; notify('⚔ Ügyesség Ital! Ügyességed visszaállt.'); }
+  else if (t === 'el') { sheet.el = sheet.elMax; notify('❤ Erő Ital! Életerőd visszaállt.'); }
+  else { sheet.sz = sheet.szMax + 1; sheet.szMax++; notify('🍀 Szerencse Ital! +1 Szerencse!'); }
+  renderAll();
+}
+
+function savePotionType() {
+  sheet.potionType = document.getElementById('potion-type').value;
+}
+
+// ========== ITEMS ==========
+function addItem() {
+  const inp = document.getElementById('item-input');
+  const v = inp.value.trim();
+  if (v) { sheet.items.push(v); inp.value = ''; renderAll(); }
+}
+function removeItem(i) { sheet.items.splice(i, 1); renderAll(); }
+
+// ========== KEYS ==========
+function addKey() {
+  const inp = document.getElementById('key-input');
+  const v = inp.value.trim();
+  if (v && !sheet.keys.includes(v)) { sheet.keys.push(v); inp.value = ''; renderAll(); }
+}
+function removeKey(i) { sheet.keys.splice(i, 1); renderAll(); }
+
+// ========== MONSTERS ==========
+function addMonster() {
+  const name = document.getElementById('m-name').value.trim();
+  const ug = parseInt(document.getElementById('m-ug').value) || 0;
+  const el = parseInt(document.getElementById('m-el').value) || 0;
+  if (name) {
+    sheet.monsters.push({ name, ug, el, dead: false });
+    document.getElementById('m-name').value = '';
+    document.getElementById('m-ug').value = '';
+    document.getElementById('m-el').value = '';
+    renderAll();
+  }
+}
+function removeMonster(i) { sheet.monsters.splice(i, 1); renderAll(); }
+function toggleDead(i) { sheet.monsters[i].dead = !sheet.monsters[i].dead; renderAll(); }
+
+// ========== VISITED ==========
+function addVisited() {
+  const v = parseInt(document.getElementById('visit-input').value);
+  if (v >= 1 && v <= 399) {
+    sheet.visited.push(v);
+    document.getElementById('visit-input').value = '';
+    renderAll();
+  }
+}
+function addCurrentVisited() {
+  sheet.visited.push(sheet.currentSection);
+  renderAll();
+}
+
+// ========== NOTES ==========
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('notes').addEventListener('input', () => {
+    sheet.notes = document.getElementById('notes').value;
+  });
+});
+
+// ========== SAVE / LOAD ==========
+function saveData() {
+  sheet.notes = document.getElementById('notes').value;
+  try {
+    localStorage.setItem('tuzegy_kalandlap', JSON.stringify(sheet));
+    notify('💾 Kalandlap mentve!');
+  } catch(e) {
+    notify('Mentési hiba: ' + e.message);
+  }
+}
+
+function loadData() {
+  try {
+    const saved = localStorage.getItem('tuzegy_kalandlap');
+    if (saved) {
+      sheet = JSON.parse(saved);
+      renderAll();
+      notify('📂 Kalandlap betöltve!');
+    } else {
+      // Try to sync from adventure
+      syncFromAdventure();
+    }
+  } catch(e) {
+    notify('Betöltési hiba!');
+  }
+}
+
+function resetData() {
+  if (!confirm('Biztosan törli az összes adatot és újrakezdi?')) return;
+  sheet = {
+    ug: 9, ugMax: 9, el: 18, elMax: 18, sz: 9, szMax: 9,
+    food: 10, potion: 2, potionType: 'el',
+    items: [], keys: [], monsters: [], notes: '', visited: [], currentSection: 1
+  };
+  renderAll();
+  notify('↺ Kalandlap törölve!');
+}
+
+// ========== NOTIFICATION ==========
+let notifTimer;
+function notify(msg) {
+  const el = document.getElementById('notification');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(notifTimer);
+  notifTimer = setTimeout(() => el.classList.remove('show'), 2800);
+}
+
+// ========== INIT ==========
+document.addEventListener('DOMContentLoaded', () => {
+  // Try to load saved data first
+  try {
+    const saved = localStorage.getItem('tuzegy_kalandlap');
+    if (saved) { sheet = JSON.parse(saved); }
+    else { syncFromAdventure(); return; }
+  } catch(e) {}
+  renderAll();
+});
+</script>
+</body>
+</html>

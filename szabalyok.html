@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Szabályok – A Tűzhegy Varázslója</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap');
+
+  :root {
+    --bg: #0d0a06;
+    --surface: #1a1208;
+    --surface2: #221a0e;
+    --border: #5c3d1a;
+    --gold: #c9922a;
+    --gold2: #f0b84a;
+    --red: #8b1a1a;
+    --red2: #c0392b;
+    --text: #e8d5b0;
+    --text-dim: #a08060;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 18px;
+    min-height: 100vh;
+  }
+
+  nav {
+    background: linear-gradient(135deg, #0a0704, #1f1508, #0a0704);
+    border-bottom: 2px solid var(--gold);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 10px;
+  }
+  .nav-logo {
+    font-family: 'Cinzel Decorative', serif;
+    color: var(--gold2);
+    font-size: 14px;
+    padding: 12px 16px 12px 0;
+    border-right: 1px solid var(--border);
+    white-space: nowrap;
+    text-shadow: 0 0 15px rgba(201,146,42,0.5);
+  }
+  .nav-links { display: flex; gap: 0; flex-wrap: wrap; }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: 14px 18px;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    border-right: 1px solid var(--border);
+    transition: all 0.2s;
+    font-family: 'Crimson Pro', serif;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--gold2);
+    background: rgba(201,146,42,0.1);
+  }
+  .nav-links a.active { border-bottom: 2px solid var(--gold2); }
+
+  main {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  .page-title {
+    font-family: 'Cinzel Decorative', serif;
+    color: var(--gold2);
+    font-size: clamp(20px, 4vw, 32px);
+    text-align: center;
+    margin-bottom: 8px;
+    text-shadow: 0 0 30px rgba(240,184,74,0.4);
+  }
+  .page-sub {
+    text-align: center;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-bottom: 40px;
+  }
+  .title-divider {
+    width: 300px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 14px auto 40px;
+  }
+
+  /* TOC */
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+  }
+  .toc h3 {
+    font-family: 'Cinzel Decorative', serif;
+    color: var(--gold);
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+  .toc ul { list-style: none; }
+  .toc ul li { padding: 4px 0; }
+  .toc ul li a {
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+    font-size: 16px;
+  }
+  .toc ul li a:hover { color: var(--gold2); }
+  .toc ul li a::before { content: '⚔ '; color: var(--gold); font-size: 12px; }
+
+  /* Sections */
+  .rule-section {
+    margin-bottom: 40px;
+  }
+  .rule-section h2 {
+    font-family: 'Cinzel Decorative', serif;
+    color: var(--gold2);
+    font-size: 22px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .rule-section h3 {
+    font-family: 'Cinzel Decorative', serif;
+    color: var(--gold);
+    font-size: 17px;
+    margin: 20px 0 10px;
+  }
+  .rule-section p {
+    line-height: 1.85;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+
+  /* Numbered steps */
+  .steps {
+    counter-reset: step;
+    list-style: none;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin: 14px 0;
+  }
+  .steps li {
+    counter-increment: step;
+    padding: 8px 0 8px 44px;
+    position: relative;
+    border-bottom: 1px solid rgba(92,61,26,0.3);
+    line-height: 1.7;
+  }
+  .steps li:last-child { border-bottom: none; }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 30px; height: 30px;
+    background: var(--red);
+    border: 1px solid var(--red2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 13px;
+    color: #ff9999;
+  }
+
+  /* Highlight boxes */
+  .highlight-box {
+    background: linear-gradient(135deg, #1a1208, #221a0e);
+    border-left: 4px solid var(--gold);
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .highlight-box.red { border-left-color: var(--red2); }
+  .highlight-box.purple { border-left-color: #9b59b6; }
+  .highlight-box.green { border-left-color: #27ae60; }
+  .highlight-box strong { color: var(--gold2); }
+  .highlight-box.red strong { color: #ff6b6b; }
+  .highlight-box.purple strong { color: #c39bd3; }
+  .highlight-box.green strong { color: #4caf50; }
+
+  /* Stat cards */
+  .stat-cards {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+  }
+  .stat-card {
+    flex: 1;
+    min-width: 180px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 18px;
+    text-align: center;
+  }
+  .stat-card .icon { font-size: 32px; margin-bottom: 8px; }
+  .stat-card .name {
+    font-family: 'Cinzel Decorative', serif;
+    color: var(--gold2);
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .stat-card .formula {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 6px 10px;
+    font-family: 'Cinzel Decorative', serif;
+    color: var(--gold);
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  .stat-card p { font-size: 14px; color: var(--text-dim); line-height: 1.5; }
+
+  /* Interactive dice demo */
+  .dice-demo {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+    margin: 20px 0;
+  }
+  .dice-demo h4 { font-family: 'Cinzel Decorative', serif; color: var(--gold); margin-bottom: 16px; }
+  .dice-row { display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+  .die {
+    width: 50px; height: 50px;
+    background: var(--surface2);
+    border: 2px solid var(--gold);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 22px;
+    color: var(--gold2);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .die:hover { border-color: var(--gold2); background: rgba(201,146,42,0.1); }
+  .die:active { transform: scale(0.9); }
+  .die.rolling { animation: shake 0.3s; }
+  @keyframes shake {
+    0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}
+  }
+  .roll-result { font-family: 'Cinzel Decorative', serif; color: var(--gold2); font-size: 20px; }
+  .roll-btn-demo {
+    background: linear-gradient(135deg, #5c3d1a, #8b5e2a);
+    color: var(--gold2);
+    border: 1px solid var(--gold);
+    padding: 10px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Crimson Pro', serif;
+    font-size: 16px;
+    transition: all 0.2s;
+    margin: 6px;
+  }
+  .roll-btn-demo:hover { background: linear-gradient(135deg, #7a5222, #a37030); }
+
+  /* Combat simulator */
+  .combat-sim {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .combat-sim h4 { font-family: 'Cinzel Decorative', serif; color: var(--gold); margin-bottom: 14px; }
+  .sim-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .sim-side { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 12px; text-align: center; }
+  .sim-side input {
+    background: #111;
+    border: 1px solid var(--border);
+    color: var(--gold2);
+    padding: 6px 8px;
+    border-radius: 3px;
+    width: 70px;
+    text-align: center;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 16px;
+    margin: 4px 0;
+  }
+  .sim-side label { font-size: 12px; color: var(--text-dim); display: block; margin-bottom: 2px; }
+  .sim-vs { font-family: 'Cinzel Decorative', serif; color: var(--gold); font-size: 20px; text-align: center; }
+  .sim-log {
+    background: #0a0704;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px;
+    min-height: 80px;
+    font-size: 15px;
+    color: var(--text-dim);
+  }
+
+  /* Potion table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+  }
+  th {
+    background: var(--surface2);
+    color: var(--gold2);
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 13px;
+    padding: 10px 14px;
+    text-align: left;
+    border: 1px solid var(--border);
+  }
+  td {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  tr:nth-child(even) td { background: var(--surface2); }
+
+  /* Background story */
+  .story-box {
+    background: linear-gradient(180deg, #1a1208, #0d0a06);
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    padding: 28px 32px;
+    position: relative;
+    margin: 20px 0;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.4);
+  }
+  .story-box::before, .story-box::after {
+    content: '';
+    position: absolute;
+    width: 18px; height: 18px;
+    border-color: var(--gold);
+    border-style: solid;
+  }
+  .story-box::before { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+  .story-box::after { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+  .story-box p { line-height: 1.9; margin-bottom: 14px; font-style: italic; color: #d4b890; }
+  .story-box p:last-child { margin-bottom: 0; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">⚔ Tűzhegy</div>
+    <div class="nav-links">
+      <a href="index.html">📖 Kaland</a>
+      <a href="szabalyok.html" class="active">📜 Szabályok</a>
+      <a href="kalandlap.html">🗡️ Kalandlap</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="page-title">📜 Játékszabályok</div>
+  <p class="page-sub">A Tűzhegy Varázslója — Steve Jackson & Ian Livingstone</p>
+  <div class="title-divider"></div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <h3>Tartalom</h3>
+    <ul>
+      <li><a href="#intro">Bevezetés — Hogyan játssz?</a></li>
+      <li><a href="#stats">Jellemzők: Ügyesség, Életerő, Szerencse</a></li>
+      <li><a href="#csata">A Csata szabályai</a></li>
+      <li><a href="#menekules">Menekülés</a></li>
+      <li><a href="#szerencse">Szerencse használata</a></li>
+      <li><a href="#elelmiszer">Élelmiszer és gyógyulás</a></li>
+      <li><a href="#italok">Varázsitalok</a></li>
+      <li><a href="#tippek">Tippek a játékhoz</a></li>
+      <li><a href="#hatter">Háttér — A kaland kezdete</a></li>
+    </ul>
+  </div>
+
+  <!-- INTRO -->
+  <div class="rule-section" id="intro">
+    <h2>🗺 Bevezetés — Hogyan játssz?</h2>
+    <p>Ennek a könyvnek <strong>Te vagy a hőse</strong>. Te vívsz meg a kocka segítségével az óriásokkal és a szörnyekkel, magad döntesz, hogy merre haladj tovább, kivel barátkozz, csatázz.</p>
+    <p>A bekezdések számokkal vannak jelölve 1-től 399-ig. Olvasás közben a szöveg utasít, hogy <em>melyik számhoz lapozz</em> a döntésed alapján. Az egyik lehetőségnél az egyik számra, a másiknál egy másikra kell ugrani.</p>
+    <div class="highlight-box">
+      <strong>Fontos:</strong> Ne olvasd sorban a bekezdéseket! Mindig csak azt olvasd, amire utasítanak. A „csalni" kísértést kerüld — menet közben minden kiderül!
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="rule-section" id="stats">
+    <h2>⚔ Jellemzők</h2>
+    <p>Kaland előtt dobókockával határozod meg három alapjellemződet. Ezeket a Kalandlapra kell feljegyezni.</p>
+
+    <div class="stat-cards">
+      <div class="stat-card">
+        <div class="icon">⚔</div>
+        <div class="name">Ügyesség</div>
+        <div class="formula">1k + 6</div>
+        <p>Kardvívó tudásodat és harci tapasztalatodat mutatja (7–12).</p>
+      </div>
+      <div class="stat-card">
+        <div class="icon">❤</div>
+        <div class="name">Életerő</div>
+        <div class="formula">2k + 12</div>
+        <p>Kondíciódat, akaraterődet és állóképességedet mutatja (14–24).</p>
+      </div>
+      <div class="stat-card">
+        <div class="icon">🍀</div>
+        <div class="name">Szerencse</div>
+        <div class="formula">1k + 6</div>
+        <p>Mennyire vagy szerencsés ember — kockázatos ráhagyatkozni! (7–12).</p>
+      </div>
+    </div>
+
+    <!-- Interactive dice -->
+    <div class="dice-demo">
+      <h4>🎲 Próbáld ki a dobást!</h4>
+      <div class="dice-row">
+        <div class="die" id="d1" onclick="rollDie('d1')">?</div>
+        <span style="color:var(--text-dim)">+</span>
+        <div class="die" id="d2" onclick="rollDie('d2')">?</div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <button class="roll-btn-demo" onclick="demoRoll('ug')">⚔ Ügyesség (1k+6)</button>
+        <button class="roll-btn-demo" onclick="demoRoll('el')">❤ Életerő (2k+12)</button>
+        <button class="roll-btn-demo" onclick="demoRoll('sz')">🍀 Szerencse (1k+6)</button>
+      </div>
+      <div class="roll-result" id="demo-result">– Kattints egy gombra!</div>
+    </div>
+
+    <div class="highlight-box">
+      <strong>Fontos szabály:</strong> A jellemzők értéke soha nem haladhatja meg a <em>kezdeti értéket</em> — kivéve, ha egy adott bekezdés ezt külön engedélyezi. Mindig vezess pontos nyilvántartást, lehetőleg ceruzával!
+    </div>
+  </div>
+
+  <!-- CSATA -->
+  <div class="rule-section" id="csata">
+    <h2>⚔ A Csata</h2>
+    <p>Ha egy bekezdés harcot ír elő, azt a következő módon kell megvívnod. Jegyezd fel a teremtmény ÜGYESSÉGÉT és ÉLETEREJÉT a Kalandlap „Harc Szörnyekkel" részébe.</p>
+
+    <h3>A harc menete (egy Forduló):</h3>
+    <ol class="steps">
+      <li>Dobj két kockával <strong>a teremtmény nevében</strong>. Add az ő Ügyesség pontjaihoz → ez az ő <em>Támadóereje</em>.</li>
+      <li>Dobj két kockával <strong>magadnak</strong>. Add a saját Ügyesség pontjaidhoz → ez a te <em>Támadóerőd</em>.</li>
+      <li>Ha a te Támadóerőd <strong>nagyobb</strong>, megsebezted az ellenfelet. → Lépés 4.</li>
+      <li>Ha az ellenség Támadóereje <strong>nagyobb</strong>, ő sebzett meg. → Lépés 5.</li>
+      <li>Ha <strong>egyforma</strong>, mindkettő kivédte a másikat — új forduló következik.</li>
+      <li>Ha TE sebezted: Vond le <strong>2 ÉP</strong>-t az ellenség Életerejéből.</li>
+      <li>Ha ő sebzett: Vond le <strong>2 ÉP</strong>-t a saját Életerődből.</li>
+      <li>Ellenőrizd az Életerő pontokat. Folytasd, amíg valamelyik Életereje el nem fogy.</li>
+    </ol>
+
+    <!-- Combat simulator -->
+    <div class="combat-sim">
+      <h4>🎮 Harci szimulátor — Próbáld ki!</h4>
+      <div class="sim-grid">
+        <div class="sim-side">
+          <strong style="color:var(--gold2)">Te</strong>
+          <label>Ügyesség</label>
+          <input type="number" id="sim-player-ug" value="9" min="1" max="20">
+          <label>Életerő</label>
+          <input type="number" id="sim-player-el" value="18" min="1" max="30">
+        </div>
+        <div class="sim-vs">⚔</div>
+        <div class="sim-side">
+          <strong style="color:#ff6b6b">Ellenség</strong>
+          <label>Ügyesség</label>
+          <input type="number" id="sim-enemy-ug" value="7" min="1" max="20">
+          <label>Életerő</label>
+          <input type="number" id="sim-enemy-el" value="8" min="1" max="30">
+        </div>
+      </div>
+      <div style="text-align:center;margin-bottom:12px;">
+        <button class="roll-btn-demo" onclick="simRound()">🎲 Következő forduló!</button>
+        <button class="roll-btn-demo" onclick="simReset()" style="background:var(--surface2);color:var(--text-dim);border-color:var(--border);">↺ Resetel</button>
+      </div>
+      <div class="sim-log" id="sim-log">Kattints a „Következő forduló" gombra a harc megkezdéséhez...</div>
+    </div>
+  </div>
+
+  <!-- MENEKÜLÉS -->
+  <div class="rule-section" id="menekules">
+    <h2>🏃 Menekülés</h2>
+    <p>Bizonyos bekezdésekben eldöntheted, hogy <strong>megfutamodsz</strong> a csatából, ha a dolgok rosszul alakulnak.</p>
+    <div class="highlight-box red">
+      <strong>Figyelem:</strong> Ha menekülsz, az ellenség automatikusan sebet ejt rajtad — <strong>vonj le 2 ÉP-t</strong>. Ez a gyávaság ára. Csak akkor menekülhetsz, ha az adott bekezdés erre lehetőséget ad!
+    </div>
+    <p>Menekülés után is élhetsz a Szerencsével, hogy csökkentsd a sebet.</p>
+  </div>
+
+  <!-- SZERENCSE -->
+  <div class="rule-section" id="szerencse">
+    <h2>🍀 Szerencse</h2>
+    <p>Kalandjaid során, akár csatában, akár más helyzetekben, a <strong>Szerencséd</strong>re is számíthatsz. De vigyázz — kockázatos!</p>
+
+    <h3>Hogyan tedd próbára?</h3>
+    <p>Dobj <strong>két kockával</strong>. Ha a dobás <em>nem nagyobb</em> mint a jelenlegi Szerencse pontszámod → <strong>Szerencsés vagy!</strong> Ha nagyobb → <strong>Balszerencsés.</strong></p>
+    <div class="highlight-box purple">
+      <strong>Minden próbánál:</strong> Vonj le 1 pontot a Szerencse pontszámodból, akár sikeres volt, akár nem. A Szerencse elfogyhat!
+    </div>
+
+    <h3>Szerencse csatában:</h3>
+    <table>
+      <tr>
+        <th>Helyzet</th>
+        <th>Szerencsés eredmény</th>
+        <th>Balszerencsés eredmény</th>
+      </tr>
+      <tr>
+        <td>Te sebezted az ellenfelet</td>
+        <td>+2 extra ÉP sebzés (összesen -4 ÉP az ellenségnek)</td>
+        <td>Csak karcolás: -1 ÉP (1-gyel visszaadsz)</td>
+      </tr>
+      <tr>
+        <td>Az ellenség sebzett téged</td>
+        <td>Elkerülted a teljes csapást: csak -1 ÉP</td>
+        <td>Komolyabb találat: -3 ÉP (plusz 1)</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ÉLELMISZER -->
+  <div class="rule-section" id="elelmiszer">
+    <h2>🍖 Élelmiszer és gyógyulás</h2>
+    <p>Hátizsákodban <strong>10 étkezésre elegendő élelmiszer</strong> van az induláskor.</p>
+    <div class="highlight-box green">
+      <strong>Étkezés:</strong> Bármikor megállhatsz enni (kivéve, ahol külön tiltják). Egy adag elfogyasztása <strong>+4 Életerő pontot</strong> ad, és csökkenti az Élelmiszerkészletet 1-gyel. Életerőd soha nem haladhatja meg a kezdeti értéket!
+    </div>
+    <p>Hosszú út vár rád — <strong>gazdálkodj bölcsen</strong> az élelemmel!</p>
+
+    <h3>Életerő visszaállítása:</h3>
+    <ul style="list-style:none;padding:0;">
+      <li style="padding:6px 0;color:var(--text-dim)">🍖 Étkezés → +4 ÉP (maximum a kezdeti értékig)</li>
+      <li style="padding:6px 0;color:var(--text-dim)">🧪 Erő Ital → Visszaállítja az Életerőt a kezdeti értékre</li>
+      <li style="padding:6px 0;color:var(--text-dim)">⚡ Egyes bekezdések különleges lehetőségeket kínálnak</li>
+    </ul>
+  </div>
+
+  <!-- ITALOK -->
+  <div class="rule-section" id="italok">
+    <h2>🧪 Varázsitalok</h2>
+    <p>Kalandod kezdetén <strong>egy palackot</strong> vihetsz magaddal a három féle ital közül. Mindegyik palack <strong>2 adagnyi</strong> italt tartalmaz.</p>
+    <table>
+      <tr>
+        <th>Ital neve</th>
+        <th>Hatás</th>
+      </tr>
+      <tr>
+        <td>⚔ Ügyesség Itala</td>
+        <td>Visszaállítja az Ügyességet a kezdeti értékre.</td>
+      </tr>
+      <tr>
+        <td>❤ Erő Itala</td>
+        <td>Visszaállítja az Életerőt a kezdeti értékre.</td>
+      </tr>
+      <tr>
+        <td>🍀 Szerencse Itala</td>
+        <td>Visszaállítja a Szerencsét a kezdeti értékre, <strong>és +1 ponttal növeli a kezdeti Szerencsét!</strong></td>
+      </tr>
+    </table>
+    <div class="highlight-box">
+      <strong>Mikor igyál?</strong> Bármikor, kivéve harcban. Csak az egyiket viheted — válassz bölcsen kalandjaid megkezdése előtt!
+    </div>
+  </div>
+
+  <!-- TIPPEK -->
+  <div class="rule-section" id="tippek">
+    <h2>💡 Tippek a játékhoz</h2>
+    <p>Egyetlen helyes út vezet el a Varázsló útvesztőjén keresztül, és csak <strong>többszöri próbálkozásra</strong> találod azt meg.</p>
+    <div class="highlight-box">
+      <strong>Készíts térképet!</strong> Jegyezd fel az elágazásokat és az ott talált dolgokat. Ez felbecsülhetetlen értékű lesz a következő játékaiban!
+    </div>
+    <ul style="padding-left:20px;line-height:2;">
+      <li>Nem minden szoba rejt kincseket — sok csak csapda vagy veszély.</li>
+      <li>Sok hamis nyom van — ne hagyd, hogy eltérítsenek.</li>
+      <li>A Varázsló ládájának kulcsait különféle lények őrzik — szükséged lesz rájuk!</li>
+      <li>Az egyetlen igazi út minimális kockázattal járható be.</li>
+    </ul>
+  </div>
+
+  <!-- HÁTTÉR -->
+  <div class="rule-section" id="hatter">
+    <h2>📖 Háttér — A kaland kezdete</h2>
+    <div class="story-box">
+      <p>Csak egy vakmerő kalandor vágna bele egy ilyen veszélyes vállalkozásba — mint ez a kincskeresés — anélkül, hogy előtte ne próbálna meg mindent megtudni a hegyről és a kincsről. Mielőtt elmennél a Tűzhegy birodalmába, néhány napot egy környékbeli falu lakói között töltesz.</p>
+      <p>Bár sokféle történetet mesélnek el neked a titokzatos Varázslóról és rejtekhelyéről, egyáltalán nem vagy benne biztos, hogy a történetek mindegyike, vagy akár csak egy is, valóban igaz-e. A falusiak sok kalandvágyó embert láttak már a hegyhez vezető úton, de közülük csak nagyon kevesen tértek vissza.</p>
+      <p>Úgy érzed, elképzelhető, hogy valóban létezik a Varázsló, és hogy a kincseit egy pompás ládában rejti, amelynek kulcsait különféle lények őrzik az útvesztőben. A Varázsló hatalmas mágikus erővel rendelkezik.</p>
+      <p>A hegy gyomrába vezető bejáratot egy csapat bibircsókos arcú Goblin őrzi. A belső kamrákban már jóval félelmetesebb lények laknak. Ahhoz, hogy a belső termekbe eljuss, át kell kelni egy folyón — de a révész ingyen nem visz át.</p>
+      <p>Mikor az indulás napja elérkezik, az egész falu apraja-nagyja megjelenik, hogy szerencsés utat kívánjon neked... <em>És most lapozz!</em></p>
+    </div>
+    <div style="text-align:center;margin-top:24px;">
+      <a href="index.html" style="display:inline-block;background:linear-gradient(135deg,#5c3d1a,#8b5e2a,#5c3d1a);color:var(--gold2);border:2px solid var(--gold);padding:14px 36px;border-radius:4px;font-family:'Cinzel Decorative',serif;font-size:16px;text-decoration:none;box-shadow:0 0 20px rgba(201,146,42,0.3);transition:all 0.3s;" onmouseover="this.style.boxShadow='0 0 40px rgba(201,146,42,0.6)'" onmouseout="this.style.boxShadow='0 0 20px rgba(201,146,42,0.3)'">⚔ Kalandba!</a>
+    </div>
+  </div>
+</main>
+
+<script>
+// Dice demo
+function roll(n) {
+  let t = 0;
+  for (let i = 0; i < n; i++) t += Math.ceil(Math.random() * 6);
+  return t;
+}
+
+function rollDie(id) {
+  const el = document.getElementById(id);
+  el.classList.add('rolling');
+  setTimeout(() => {
+    el.textContent = Math.ceil(Math.random() * 6);
+    el.classList.remove('rolling');
+  }, 300);
+}
+
+function demoRoll(type) {
+  const d1 = document.getElementById('d1');
+  const d2 = document.getElementById('d2');
+  d1.classList.add('rolling');
+  d2.classList.add('rolling');
+
+  setTimeout(() => {
+    const r1 = Math.ceil(Math.random() * 6);
+    const r2 = Math.ceil(Math.random() * 6);
+    d1.textContent = r1;
+    d1.classList.remove('rolling');
+    d2.classList.remove('rolling');
+
+    let result, bonus, label;
+    if (type === 'ug') {
+      result = r1 + 6; bonus = '+6'; label = '⚔ Ügyesség';
+      d2.textContent = '—';
+    } else if (type === 'el') {
+      d2.textContent = r2;
+      result = r1 + r2 + 12; bonus = '+12'; label = '❤ Életerő';
+    } else {
+      result = r1 + 6; bonus = '+6'; label = '🍀 Szerencse';
+      d2.textContent = '—';
+    }
+    document.getElementById('demo-result').textContent = `${label}: ${result} pont (dobás ${bonus})`;
+  }, 320);
+}
+
+// Combat sim
+let simState = null;
+
+function simReset() {
+  simState = null;
+  document.getElementById('sim-log').innerHTML = 'Kattints a „Következő forduló" gombra a harc megkezdéséhez...';
+}
+
+function simRound() {
+  const pUg = parseInt(document.getElementById('sim-player-ug').value) || 9;
+  const eUg = parseInt(document.getElementById('sim-enemy-ug').value) || 7;
+
+  if (!simState) {
+    simState = {
+      pEl: parseInt(document.getElementById('sim-player-el').value) || 18,
+      eEl: parseInt(document.getElementById('sim-enemy-el').value) || 8,
+      round: 1
+    };
+    document.getElementById('sim-log').innerHTML = '<em style="color:var(--text-dim)">A harc elkezdődött!</em><br>';
+  }
+
+  if (simState.pEl <= 0 || simState.eEl <= 0) {
+    document.getElementById('sim-log').innerHTML += '<em style="color:var(--gold2)">A harc már véget ért. Kattints Resetelre az újrakezdéshez.</em>';
+    return;
+  }
+
+  const pr = roll(2), er = roll(2);
+  const pa = pr + pUg, ea = er + eUg;
+  const log = document.getElementById('sim-log');
+
+  let msg = `<strong style="color:var(--text-dim)">Forduló ${simState.round}:</strong> `;
+  if (pa > ea) {
+    simState.eEl -= 2;
+    msg += `<span style="color:#4caf50">Te sebezted! (${pa} vs ${ea}) → Ellenség: -2 ÉP (${simState.eEl} maradt)</span>`;
+  } else if (ea > pa) {
+    simState.pEl -= 2;
+    msg += `<span style="color:#ff6b6b">Megsebesített! (${ea} vs ${pa}) → Te: -2 ÉP (${simState.pEl} maradt)</span>`;
+  } else {
+    msg += `<span style="color:var(--text-dim)">Patt! (${pa} vs ${ea})</span>`;
+  }
+
+  simState.round++;
+
+  if (simState.eEl <= 0) msg += `<br><strong style="color:var(--gold2)">✅ Legyőzted az ellenséget!</strong>`;
+  if (simState.pEl <= 0) msg += `<br><strong style="color:#ff3333">💀 Meghaltál...</strong>`;
+
+  log.innerHTML += msg + '<br>';
+  log.scrollTop = log.scrollHeight;
+}
+</script>
+</body>
+</html>
