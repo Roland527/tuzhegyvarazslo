@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Szabályok – A Tűzhegy Varázslója</title>
+  <link rel="stylesheet" href="tuzegy.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">⚔ Tűzhegy</div>
+    <div class="nav-links">
+      <a href="index.html">📖 Kaland</a>
+      <a href="szabalyok.html" class="active">📜 Szabályok</a>
+      <a href="kalandlap.html">🗡️ Kalandlap</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="page-title">📜 Játékszabályok</div>
+  <p class="page-sub">A Tűzhegy Varázslója — Steve Jackson & Ian Livingstone</p>
+  <div class="title-divider"></div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <h3>Tartalom</h3>
+    <ul>
+      <li><a href="#intro">Bevezetés — Hogyan játssz?</a></li>
+      <li><a href="#stats">Jellemzők: Ügyesség, Életerő, Szerencse</a></li>
+      <li><a href="#csata">A Csata szabályai</a></li>
+      <li><a href="#menekules">Menekülés</a></li>
+      <li><a href="#szerencse">Szerencse használata</a></li>
+      <li><a href="#elelmiszer">Élelmiszer és gyógyulás</a></li>
+      <li><a href="#italok">Varázsitalok</a></li>
+      <li><a href="#tippek">Tippek a játékhoz</a></li>
+      <li><a href="#hatter">Háttér — A kaland kezdete</a></li>
+    </ul>
+  </div>
+
+  <!-- INTRO -->
+  <div class="rule-section" id="intro">
+    <h2>🗺 Bevezetés — Hogyan játssz?</h2>
+    <p>Ennek a könyvnek <strong>Te vagy a hőse</strong>. Te vívsz meg a kocka segítségével az óriásokkal és a szörnyekkel, magad döntesz, hogy merre haladj tovább, kivel barátkozz, csatázz.</p>
+    <p>A bekezdések számokkal vannak jelölve 1-től 399-ig. Olvasás közben a szöveg utasít, hogy <em>melyik számhoz lapozz</em> a döntésed alapján. Az egyik lehetőségnél az egyik számra, a másiknál egy másikra kell ugrani.</p>
+    <div class="highlight-box">
+      <strong>Fontos:</strong> Ne olvasd sorban a bekezdéseket! Mindig csak azt olvasd, amire utasítanak. A „csalni" kísértést kerüld — menet közben minden kiderül!
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="rule-section" id="stats">
+    <h2>⚔ Jellemzők</h2>
+    <p>Kaland előtt dobókockával határozod meg három alapjellemződet. Ezeket a Kalandlapra kell feljegyezni.</p>
+
+    <div class="stat-cards">
+      <div class="stat-card">
+        <div class="icon">⚔</div>
+        <div class="name">Ügyesség</div>
+        <div class="formula">1k + 6</div>
+        <p>Kardvívó tudásodat és harci tapasztalatodat mutatja (7–12).</p>
+      </div>
+      <div class="stat-card">
+        <div class="icon">❤</div>
+        <div class="name">Életerő</div>
+        <div class="formula">2k + 12</div>
+        <p>Kondíciódat, akaraterődet és állóképességedet mutatja (14–24).</p>
+      </div>
+      <div class="stat-card">
+        <div class="icon">🍀</div>
+        <div class="name">Szerencse</div>
+        <div class="formula">1k + 6</div>
+        <p>Mennyire vagy szerencsés ember — kockázatos ráhagyatkozni! (7–12).</p>
+      </div>
+    </div>
+
+    <!-- Interactive dice -->
+    <div class="dice-demo">
+      <h4>🎲 Próbáld ki a dobást!</h4>
+      <div class="dice-row">
+        <div class="die" id="d1" onclick="rollDie('d1')">?</div>
+        <span style="color:var(--text-dim)">+</span>
+        <div class="die" id="d2" onclick="rollDie('d2')">?</div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <button class="roll-btn-demo" onclick="demoRoll('ug')">⚔ Ügyesség (1k+6)</button>
+        <button class="roll-btn-demo" onclick="demoRoll('el')">❤ Életerő (2k+12)</button>
+        <button class="roll-btn-demo" onclick="demoRoll('sz')">🍀 Szerencse (1k+6)</button>
+      </div>
+      <div class="roll-result" id="demo-result">– Kattints egy gombra!</div>
+    </div>
+
+    <div class="highlight-box">
+      <strong>Fontos szabály:</strong> A jellemzők értéke soha nem haladhatja meg a <em>kezdeti értéket</em> — kivéve, ha egy adott bekezdés ezt külön engedélyezi. Mindig vezess pontos nyilvántartást, lehetőleg ceruzával!
+    </div>
+  </div>
+
+  <!-- CSATA -->
+  <div class="rule-section" id="csata">
+    <h2>⚔ A Csata</h2>
+    <p>Ha egy bekezdés harcot ír elő, azt a következő módon kell megvívnod. Jegyezd fel a teremtmény ÜGYESSÉGÉT és ÉLETEREJÉT a Kalandlap „Harc Szörnyekkel" részébe.</p>
+
+    <h3>A harc menete (egy Forduló):</h3>
+    <ol class="steps">
+      <li>Dobj két kockával <strong>a teremtmény nevében</strong>. Add az ő Ügyesség pontjaihoz → ez az ő <em>Támadóereje</em>.</li>
+      <li>Dobj két kockával <strong>magadnak</strong>. Add a saját Ügyesség pontjaidhoz → ez a te <em>Támadóerőd</em>.</li>
+      <li>Ha a te Támadóerőd <strong>nagyobb</strong>, megsebezted az ellenfelet. → Lépés 4.</li>
+      <li>Ha az ellenség Támadóereje <strong>nagyobb</strong>, ő sebzett meg. → Lépés 5.</li>
+      <li>Ha <strong>egyforma</strong>, mindkettő kivédte a másikat — új forduló következik.</li>
+      <li>Ha TE sebezted: Vond le <strong>2 ÉP</strong>-t az ellenség Életerejéből.</li>
+      <li>Ha ő sebzett: Vond le <strong>2 ÉP</strong>-t a saját Életerődből.</li>
+      <li>Ellenőrizd az Életerő pontokat. Folytasd, amíg valamelyik Életereje el nem fogy.</li>
+    </ol>
+
+    <!-- Combat simulator -->
+    <div class="combat-sim">
+      <h4>🎮 Harci szimulátor — Próbáld ki!</h4>
+      <div class="sim-grid">
+        <div class="sim-side">
+          <strong style="color:var(--gold2)">Te</strong>
+          <label>Ügyesség</label>
+          <input type="number" id="sim-player-ug" value="9" min="1" max="20">
+          <label>Életerő</label>
+          <input type="number" id="sim-player-el" value="18" min="1" max="30">
+        </div>
+        <div class="sim-vs">⚔</div>
+        <div class="sim-side">
+          <strong style="color:#ff6b6b">Ellenség</strong>
+          <label>Ügyesség</label>
+          <input type="number" id="sim-enemy-ug" value="7" min="1" max="20">
+          <label>Életerő</label>
+          <input type="number" id="sim-enemy-el" value="8" min="1" max="30">
+        </div>
+      </div>
+      <div style="text-align:center;margin-bottom:12px;">
+        <button class="roll-btn-demo" onclick="simRound()">🎲 Következő forduló!</button>
+        <button class="roll-btn-demo" onclick="simReset()" style="background:var(--surface2);color:var(--text-dim);border-color:var(--border);">↺ Resetel</button>
+      </div>
+      <div class="sim-log" id="sim-log">Kattints a „Következő forduló" gombra a harc megkezdéséhez...</div>
+    </div>
+  </div>
+
+  <!-- MENEKÜLÉS -->
+  <div class="rule-section" id="menekules">
+    <h2>🏃 Menekülés</h2>
+    <p>Bizonyos bekezdésekben eldöntheted, hogy <strong>megfutamodsz</strong> a csatából, ha a dolgok rosszul alakulnak.</p>
+    <div class="highlight-box red">
+      <strong>Figyelem:</strong> Ha menekülsz, az ellenség automatikusan sebet ejt rajtad — <strong>vonj le 2 ÉP-t</strong>. Ez a gyávaság ára. Csak akkor menekülhetsz, ha az adott bekezdés erre lehetőséget ad!
+    </div>
+    <p>Menekülés után is élhetsz a Szerencsével, hogy csökkentsd a sebet.</p>
+  </div>
+
+  <!-- SZERENCSE -->
+  <div class="rule-section" id="szerencse">
+    <h2>🍀 Szerencse</h2>
+    <p>Kalandjaid során, akár csatában, akár más helyzetekben, a <strong>Szerencséd</strong>re is számíthatsz. De vigyázz — kockázatos!</p>
+
+    <h3>Hogyan tedd próbára?</h3>
+    <p>Dobj <strong>két kockával</strong>. Ha a dobás <em>nem nagyobb</em> mint a jelenlegi Szerencse pontszámod → <strong>Szerencsés vagy!</strong> Ha nagyobb → <strong>Balszerencsés.</strong></p>
+    <div class="highlight-box purple">
+      <strong>Minden próbánál:</strong> Vonj le 1 pontot a Szerencse pontszámodból, akár sikeres volt, akár nem. A Szerencse elfogyhat!
+    </div>
+
+    <h3>Szerencse csatában:</h3>
+    <table>
+      <tr>
+        <th>Helyzet</th>
+        <th>Szerencsés eredmény</th>
+        <th>Balszerencsés eredmény</th>
+      </tr>
+      <tr>
+        <td>Te sebezted az ellenfelet</td>
+        <td>+2 extra ÉP sebzés (összesen -4 ÉP az ellenségnek)</td>
+        <td>Csak karcolás: -1 ÉP (1-gyel visszaadsz)</td>
+      </tr>
+      <tr>
+        <td>Az ellenség sebzett téged</td>
+        <td>Elkerülted a teljes csapást: csak -1 ÉP</td>
+        <td>Komolyabb találat: -3 ÉP (plusz 1)</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ÉLELMISZER -->
+  <div class="rule-section" id="elelmiszer">
+    <h2>🍖 Élelmiszer és gyógyulás</h2>
+    <p>Hátizsákodban <strong>10 étkezésre elegendő élelmiszer</strong> van az induláskor.</p>
+    <div class="highlight-box green">
+      <strong>Étkezés:</strong> Bármikor megállhatsz enni (kivéve, ahol külön tiltják). Egy adag elfogyasztása <strong>+4 Életerő pontot</strong> ad, és csökkenti az Élelmiszerkészletet 1-gyel. Életerőd soha nem haladhatja meg a kezdeti értéket!
+    </div>
+    <p>Hosszú út vár rád — <strong>gazdálkodj bölcsen</strong> az élelemmel!</p>
+
+    <h3>Életerő visszaállítása:</h3>
+    <ul style="list-style:none;padding:0;">
+      <li style="padding:6px 0;color:var(--text-dim)">🍖 Étkezés → +4 ÉP (maximum a kezdeti értékig)</li>
+      <li style="padding:6px 0;color:var(--text-dim)">🧪 Erő Ital → Visszaállítja az Életerőt a kezdeti értékre</li>
+      <li style="padding:6px 0;color:var(--text-dim)">⚡ Egyes bekezdések különleges lehetőségeket kínálnak</li>
+    </ul>
+  </div>
+
+  <!-- ITALOK -->
+  <div class="rule-section" id="italok">
+    <h2>🧪 Varázsitalok</h2>
+    <p>Kalandod kezdetén <strong>egy palackot</strong> vihetsz magaddal a három féle ital közül. Mindegyik palack <strong>2 adagnyi</strong> italt tartalmaz.</p>
+    <table>
+      <tr>
+        <th>Ital neve</th>
+        <th>Hatás</th>
+      </tr>
+      <tr>
+        <td>⚔ Ügyesség Itala</td>
+        <td>Visszaállítja az Ügyességet a kezdeti értékre.</td>
+      </tr>
+      <tr>
+        <td>❤ Erő Itala</td>
+        <td>Visszaállítja az Életerőt a kezdeti értékre.</td>
+      </tr>
+      <tr>
+        <td>🍀 Szerencse Itala</td>
+        <td>Visszaállítja a Szerencsét a kezdeti értékre, <strong>és +1 ponttal növeli a kezdeti Szerencsét!</strong></td>
+      </tr>
+    </table>
+    <div class="highlight-box">
+      <strong>Mikor igyál?</strong> Bármikor, kivéve harcban. Csak az egyiket viheted — válassz bölcsen kalandjaid megkezdése előtt!
+    </div>
+  </div>
+
+  <!-- TIPPEK -->
+  <div class="rule-section" id="tippek">
+    <h2>💡 Tippek a játékhoz</h2>
+    <p>Egyetlen helyes út vezet el a Varázsló útvesztőjén keresztül, és csak <strong>többszöri próbálkozásra</strong> találod azt meg.</p>
+    <div class="highlight-box">
+      <strong>Készíts térképet!</strong> Jegyezd fel az elágazásokat és az ott talált dolgokat. Ez felbecsülhetetlen értékű lesz a következő játékaiban!
+    </div>
+    <ul style="padding-left:20px;line-height:2;">
+      <li>Nem minden szoba rejt kincseket — sok csak csapda vagy veszély.</li>
+      <li>Sok hamis nyom van — ne hagyd, hogy eltérítsenek.</li>
+      <li>A Varázsló ládájának kulcsait különféle lények őrzik — szükséged lesz rájuk!</li>
+      <li>Az egyetlen igazi út minimális kockázattal járható be.</li>
+    </ul>
+  </div>
+
+  <!-- HÁTTÉR -->
+  <div class="rule-section" id="hatter">
+    <h2>📖 Háttér — A kaland kezdete</h2>
+    <div class="story-box">
+      <p>Csak egy vakmerő kalandor vágna bele egy ilyen veszélyes vállalkozásba — mint ez a kincskeresés — anélkül, hogy előtte ne próbálna meg mindent megtudni a hegyről és a kincsről. Mielőtt elmennél a Tűzhegy birodalmába, néhány napot egy környékbeli falu lakói között töltesz.</p>
+      <p>Bár sokféle történetet mesélnek el neked a titokzatos Varázslóról és rejtekhelyéről, egyáltalán nem vagy benne biztos, hogy a történetek mindegyike, vagy akár csak egy is, valóban igaz-e. A falusiak sok kalandvágyó embert láttak már a hegyhez vezető úton, de közülük csak nagyon kevesen tértek vissza.</p>
+      <p>Úgy érzed, elképzelhető, hogy valóban létezik a Varázsló, és hogy a kincseit egy pompás ládában rejti, amelynek kulcsait különféle lények őrzik az útvesztőben. A Varázsló hatalmas mágikus erővel rendelkezik.</p>
+      <p>A hegy gyomrába vezető bejáratot egy csapat bibircsókos arcú Goblin őrzi. A belső kamrákban már jóval félelmetesebb lények laknak. Ahhoz, hogy a belső termekbe eljuss, át kell kelni egy folyón — de a révész ingyen nem visz át.</p>
+      <p>Mikor az indulás napja elérkezik, az egész falu apraja-nagyja megjelenik, hogy szerencsés utat kívánjon neked... <em>És most lapozz!</em></p>
+    </div>
+    <div style="text-align:center;margin-top:24px;">
+      <a href="index.html" style="display:inline-block;background:linear-gradient(135deg,#5c3d1a,#8b5e2a,#5c3d1a);color:var(--gold2);border:2px solid var(--gold);padding:14px 36px;border-radius:4px;font-family:'Cinzel Decorative',serif;font-size:16px;text-decoration:none;box-shadow:0 0 20px rgba(201,146,42,0.3);transition:all 0.3s;" onmouseover="this.style.boxShadow='0 0 40px rgba(201,146,42,0.6)'" onmouseout="this.style.boxShadow='0 0 20px rgba(201,146,42,0.3)'">⚔ Kalandba!</a>
+    </div>
+  </div>
+</main>
+
+<script>
+// Dice demo
+function roll(n) {
+  let t = 0;
+  for (let i = 0; i < n; i++) t += Math.ceil(Math.random() * 6);
+  return t;
+}
+
+function rollDie(id) {
+  const el = document.getElementById(id);
+  el.classList.add('rolling');
+  setTimeout(() => {
+    el.textContent = Math.ceil(Math.random() * 6);
+    el.classList.remove('rolling');
+  }, 300);
+}
+
+function demoRoll(type) {
+  const d1 = document.getElementById('d1');
+  const d2 = document.getElementById('d2');
+  d1.classList.add('rolling');
+  d2.classList.add('rolling');
+
+  setTimeout(() => {
+    const r1 = Math.ceil(Math.random() * 6);
+    const r2 = Math.ceil(Math.random() * 6);
+    d1.textContent = r1;
+    d1.classList.remove('rolling');
+    d2.classList.remove('rolling');
+
+    let result, bonus, label;
+    if (type === 'ug') {
+      result = r1 + 6; bonus = '+6'; label = '⚔ Ügyesség';
+      d2.textContent = '—';
+    } else if (type === 'el') {
+      d2.textContent = r2;
+      result = r1 + r2 + 12; bonus = '+12'; label = '❤ Életerő';
+    } else {
+      result = r1 + 6; bonus = '+6'; label = '🍀 Szerencse';
+      d2.textContent = '—';
+    }
+    document.getElementById('demo-result').textContent = `${label}: ${result} pont (dobás ${bonus})`;
+  }, 320);
+}
+
+// Combat sim
+let simState = null;
+
+function simReset() {
+  simState = null;
+  document.getElementById('sim-log').innerHTML = 'Kattints a „Következő forduló" gombra a harc megkezdéséhez...';
+}
+
+function simRound() {
+  const pUg = parseInt(document.getElementById('sim-player-ug').value) || 9;
+  const eUg = parseInt(document.getElementById('sim-enemy-ug').value) || 7;
+
+  if (!simState) {
+    simState = {
+      pEl: parseInt(document.getElementById('sim-player-el').value) || 18,
+      eEl: parseInt(document.getElementById('sim-enemy-el').value) || 8,
+      round: 1
+    };
+    document.getElementById('sim-log').innerHTML = '<em style="color:var(--text-dim)">A harc elkezdődött!</em><br>';
+  }
+
+  if (simState.pEl <= 0 || simState.eEl <= 0) {
+    document.getElementById('sim-log').innerHTML += '<em style="color:var(--gold2)">A harc már véget ért. Kattints Resetelre az újrakezdéshez.</em>';
+    return;
+  }
+
+  const pr = roll(2), er = roll(2);
+  const pa = pr + pUg, ea = er + eUg;
+  const log = document.getElementById('sim-log');
+
+  let msg = `<strong style="color:var(--text-dim)">Forduló ${simState.round}:</strong> `;
+  if (pa > ea) {
+    simState.eEl -= 2;
+    msg += `<span style="color:#4caf50">Te sebezted! (${pa} vs ${ea}) → Ellenség: -2 ÉP (${simState.eEl} maradt)</span>`;
+  } else if (ea > pa) {
+    simState.pEl -= 2;
+    msg += `<span style="color:#ff6b6b">Megsebesített! (${ea} vs ${pa}) → Te: -2 ÉP (${simState.pEl} maradt)</span>`;
+  } else {
+    msg += `<span style="color:var(--text-dim)">Patt! (${pa} vs ${ea})</span>`;
+  }
+
+  simState.round++;
+
+  if (simState.eEl <= 0) msg += `<br><strong style="color:var(--gold2)">✅ Legyőzted az ellenséget!</strong>`;
+  if (simState.pEl <= 0) msg += `<br><strong style="color:#ff3333">💀 Meghaltál...</strong>`;
+
+  log.innerHTML += msg + '<br>';
+  log.scrollTop = log.scrollHeight;
+}
+</script>
+</body>
+</html>
